@@ -23,23 +23,10 @@ public_users.get('/isbn/:isbn',function (req, res) {
   
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
-  
-  const authorParam = req.params.author.toLowerCase();
-  
-
- 
-  for (let index = 1; index < books.length; index++) {
-    if (books[index].author.toLowerCase() == authorParam) {
-        res.send(JSON.stringify(books[index]));
-    } else{
-        
-
-    }
-
-  }
-
-
-
+    
+const author = req.params.author;
+let book = Object.values(books).filter(book => book.author.toLowerCase() === author.toLowerCase());
+res.send(JSON.stringify(book)); 
 });
 
 // Get all books based on title
