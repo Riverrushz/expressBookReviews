@@ -3,11 +3,37 @@ let books = require("./booksdb.js");
 let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
-
-/*
-let prompt = require('prompt-sync')();
+const axios = require('axios');
 let fs = require('fs');
-*/
+const { error } = require('console');
+let prompt = require('prompt-sync')();
+
+function readBookList(){
+    console.log(JSON.stringify(books))
+}
+setTimeout(readBookList,2000);
+
+
+const isbnBookNum = new Promise((resolve, reject)=> {
+    let bookNumber = prompt('What is the books number');
+    try {
+        const data = fs.readFileSync(bookNumber,{encoding:'utf8', flag:'r'})
+       
+            data = books[data];
+
+        resolve(data);
+    } catch (error) {
+        reject(error);
+    }
+})
+
+console.log(isbnBookNum)
+
+    isbnBookNum.then(
+        (data) => console.log(data),
+        (error) => console.log("error")
+    )
+
 
 public_users.post("/register", (req,res) => {
     const username = req.body.username;
@@ -92,6 +118,10 @@ public_users.get('/review/:isbn',function (req, res) {
     
       res.send(JSON.stringify(books[isbn].reviews));
     
-  });
+});
 
 module.exports.general = public_users;
+
+
+
+
