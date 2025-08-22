@@ -8,6 +8,8 @@ let fs = require('fs');
 const { error } = require('console');
 let prompt = require('prompt-sync')();
 
+//Promise callbacks
+
 function readBookList(){
     console.log(JSON.stringify(books))
 }
@@ -17,15 +19,12 @@ setTimeout(readBookList,2000);
 const isbnBookNum = new Promise((resolve, reject)=> {
     let bookNumber = prompt('What is the books number');
     try {
-        const data = fs.readFileSync(bookNumber,{encoding:'utf8', flag:'r'})
-       
-            data = books[data];
-
-        resolve(data);
+        resolve(JSON.stringify(books[bookNumber]));
     } catch (error) {
         reject(error);
     }
 })
+
 
 console.log(isbnBookNum)
 
@@ -34,7 +33,51 @@ console.log(isbnBookNum)
         (error) => console.log("error")
     )
 
+const isAuthName = new Promise((resolve, reject)=> {
+    let bookAuth = prompt('Who is the books Author');
+    try {
+        
+        let book = Object.values(books).filter(book => book.author.toLowerCase() === bookAuth.toLowerCase());
 
+        resolve(JSON.stringify(book));
+    } catch (error) {
+        reject(error);
+    }
+})
+
+
+console.log(isAuthName)
+
+isAuthName.then(
+        (data) => console.log(data),
+        (error) => console.log("error")
+    )
+
+
+
+
+const isBookTitle = new Promise((resolve, reject)=> {
+    let bookTitle = prompt('What is the books title');
+    try {
+        
+        let book = Object.values(books).filter(book => book.title.toLowerCase() === bookTitle.toLowerCase());
+
+        resolve(JSON.stringify(book));
+    } catch (error) {
+        reject(error);
+    }
+})
+
+
+console.log(isBookTitle)
+
+isBookTitle.then(
+        (data) => console.log(data),
+        (error) => console.log("error")
+    )
+
+
+//Tasks 1-4
 public_users.post("/register", (req,res) => {
     const username = req.body.username;
     const password = req.body.password;
@@ -121,6 +164,11 @@ public_users.get('/review/:isbn',function (req, res) {
 });
 
 module.exports.general = public_users;
+
+
+
+
+
 
 
 
